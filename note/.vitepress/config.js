@@ -10,26 +10,28 @@ export default {
           text: '简要说明',
           items: [
             { text: '介绍', link: '/intro' },
-            { text: '开始使用', link: '/getting-started' },
-            //这里添加新文章链接
+            { text: '开始使用', link: '/getting-started' }
           ]
         },
         {
-          text: '计算机基础', //text可以是任何想要在侧边栏显示的文字
-          items: [ //这里使用的是数组
+          text: '计算机基础',
+          items: [
             { text: '我的第一篇文章', link: '/blog/my-first-post' },
-            { text: '学习笔记', link: '/blog/study-notes' },
-            // 在这里添加新的文章链接
-            // link: 必须以 / 开头，并且对应实际的文件路径（不需要包含 .md 扩展名）
+            { text: '学习笔记', link: '/blog/study-notes' }
           ]
         },
         {
-          text: '高效系统指南', //text可以是任何想要在侧边栏显示的文字
-          items: [ //这里使用的是数组
-            { text: '我的第一篇文章', link: '/blog/my-first-post' },
-            { text: '学习笔记', link: '/blog/study-notes' },
-            // 在这里添加新的文章链接
-            // link: 必须以 / 开头，并且对应实际的文件路径（不需要包含 .md 扩展名）
+          text: '高效系统指南', 
+          link: '/windows-computer-literacy/',
+          items: [
+            {
+              text: 'obsidian plugin',
+              link: '/windows-computer-literacy/obsidian-plugin/',
+              items: [
+                { text: 'obsidian搭配 AI agent', link: '/windows-computer-literacy/obsidian-plugin/obsidian-AI-agent-install' }
+              ]
+            },
+            { text: 'litter projects', link: '/windows-computer-literacy/projects/' }
           ]
         }
       ],
@@ -39,5 +41,13 @@ export default {
         { text: '首页', link: '/' },
         { text: '笔记', link: '/notes/' }
       ]
+    },
+    
+    vite: {
+      resolve: {
+        alias: {
+          '@images': '/images'
+        }
+      }
     }
   }
