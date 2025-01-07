@@ -11,7 +11,7 @@
 > 3.2.1 [官方文档指南](https://www.obsidiancopilot.com/en/docs)
 
 # 安装
-1. 先在obsidian中的第三方插件搜索:"copilot for obsidian"![[Pasted image 20250101192320.png]]![image-20250107135849673](images/image-20250107135849673.png)
+1. 先在obsidian中的第三方插件搜索:"copilot for obsidian"![[Pasted image 20250101192320.png]]!image-20250107135849673 images/image-20250107135849673.png
 2. 下载![[Pasted image 20250101192356.png]]
 
 # 配置
