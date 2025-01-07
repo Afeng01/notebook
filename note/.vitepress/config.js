@@ -1,4 +1,5 @@
 export default {
+    base: '/notebook/',
     title: "我的学习笔记",
     description: "使用 VitePress 搭建的笔记站点",
     
