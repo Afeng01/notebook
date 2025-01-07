@@ -6,4 +6,4 @@
 
 ## 目录
 以下内容还未更新，仅为测试
-- [obsidian-AI-agent-install](./obsidian-AI-agent-install)
+- [obsidian-AI-agent-install](./windows-computer-literacy/obsidian-plugin/obsidian-AI-agent-install.md)
