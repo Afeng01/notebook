@@ -20,13 +20,32 @@ jobs:
           node-version: '18'
           cache: 'npm'
           
+      - name: Show directory structure
+        run: |
+          pwd
+          ls -la
+          echo "=== note directory ==="
+          ls -la note/
+          echo "=== .vitepress directory ==="
+          ls -la note/.vitepress/
+          
       - name: Install dependencies
         working-directory: ./note
-        run: npm install
+        run: |
+          npm install
+          echo "=== node_modules ==="
+          ls -la node_modules/
+          echo "=== vitepress version ==="
+          npm list vitepress
           
-      - name: Build
+      - name: Build with debug
         working-directory: ./note
-        run: npm run build
+        run: |
+          echo "=== Starting build ==="
+          npm run build --debug
+          echo "=== Build complete ==="
+          echo "=== Checking dist directory ==="
+          ls -la .vitepress/dist/
           
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
