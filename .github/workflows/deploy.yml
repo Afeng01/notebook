@@ -18,28 +18,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          
-      - name: Debug Info
-        run: |
-          pwd
-          ls -la
-          
-      - name: Debug note directory
-        run: |
-          cd note || echo "note directory not found"
-          pwd
-          ls -la
-          cat package.json || echo "package.json not found"
+          cache: 'npm'
           
       - name: Install dependencies
-        run: |
-          cd note
-          npm install
+        working-directory: ./note
+        run: npm install
           
       - name: Build
-        run: |
-          cd note
-          npm run build
+        working-directory: ./note
+        run: npm run build
           
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

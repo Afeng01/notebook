@@ -1,0 +1,13 @@
+{
+  "name": "notebook",
+  "version": "1.0.0",
+  "description": "Personal notebook",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "dependencies": {
+    "vitepress": "^1.0.0-rc.44"
+  }
+} 
