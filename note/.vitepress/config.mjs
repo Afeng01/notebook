@@ -83,7 +83,11 @@ export default defineConfig({
   },
 
   // 针对obsidian仓库相对路径的配置
+  // 忽略死链接检查
+  ignoreDeadLinks: true,
+
   markdown: {
+    // 在markdown配置中也添加忽略 死链接 选项
     ignoreDeadLinks: true,
     config: (md) => {
       const defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
@@ -95,6 +99,7 @@ export default defineConfig({
         const href = token.attrGet('href')
         
         if (href) {
+          // 修改链接路径，将 public 替换为 content
           if (!href.startsWith('/') && !href.startsWith('http')) {
             token.attrSet('href', `/content/${href}`)
           }
