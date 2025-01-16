@@ -1,8 +1,3 @@
----
-public: true
-title: 关于本站
----
-
 # 关于本站
 
 这是一个使用 VitePress 搭建的个人知识库网站。

@@ -17,7 +17,7 @@ export default defineConfig({
     // 导航栏
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Note', link: '/content/' }
+      { text: 'Note', link: '/public/' }
     ],
     
     // 全局侧边栏
@@ -26,17 +26,17 @@ export default defineConfig({
         text: '简要说明',
         collapsed: false,
         items: [
-          { text: '主页', link: '/content/' },
-          { text: '介绍', link: '/content/intro' },
-          { text: '开始使用', link: '/content/getting-started' }
+          { text: '一切的开始', link: '/public/' },
+          { text: '介绍', link: '/public/intro' },
+          { text: '开始使用', link: '/public/getting-started' }
         ]
       },
       {
         text: '生活随笔',
         collapsed: false,
         items: [
-          { text: '生活随笔首页', link: '/content/categories/life/' },
-          { text: '第一篇笔记', link: '/content/categories/life/first' }
+          { text: '生活随笔首页', link: '/public/categories/life/' },
+          { text: '第一篇笔记', link: '/public/categories/life/first' }
         ]
       }
     ],
@@ -77,6 +77,24 @@ export default defineConfig({
   },
 
   markdown: {
-    ignoreDeadLinks: true
+    ignoreDeadLinks: true,
+    config: (md) => {
+      const defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
+        return self.renderToken(tokens, idx, options)
+      }
+
+      md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
+        const token = tokens[idx]
+        const href = token.attrGet('href')
+        
+        if (href) {
+          if (!href.startsWith('/') && !href.startsWith('http')) {
+            token.attrSet('href', `/public/${href}`)
+          }
+        }
+
+        return defaultRender(tokens, idx, options, env, self)
+      }
+    }
   }
 }) 
