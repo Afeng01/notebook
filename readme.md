@@ -1,238 +1,116 @@
-# 个人笔记网站搭建指南
+# 筱筱的笔记本
 
-这是一个基于 VitePress 构建的个人笔记网站项目。无论你是想记录学习笔记、写博客，还是建立知识库，这个项目都能帮助你快速搭建一个美观的网站。
+这是一个使用 VitePress 构建的个人知识库网站，可以直接展示 Obsidian 笔记内容。
 
-> 💡 即使你完全不懂编程，按照本指南的步骤操作也能轻松搭建属于自己的网站！
-
-# 📚 目录
-
-- [环境准备](#环境准备)
-- [快速开始](#快速开始)
-- [网站内容管理](#网站内容管理)
-- [个性化设置](#个性化设置)
-- [本地开发](#本地开发)
-- [部署上线](#部署上线)
-- [常见问题](#常见问题)
-
-# 🔧 环境准备
-
-## 必需软件
-
-1. **Node.js** (16.0 或更高版本)
-   - 访问 [Node.js 官网](https://nodejs.org/)
-   - 下载并安装适合你系统的版本
-   - 安装完成后，打开命令行输入 `node -v` 确认安装成功
-
-2. **Visual Studio Code** (推荐的编辑器)
-   - 访问 [VS Code 官网](https://code.visualstudio.com/)
-   - 下载并安装
-   - 建议安装以下扩展:
-     - Markdown All in One
-     - Vue Language Features
-     - Volar
-
-3. **Git** (用于版本控制和部署)
-   - 访问 [Git 官网](https://git-scm.com/)
-   - 下载并安装
-
-# 🚀 快速开始
-
-## 1. 获取项目
-
-两种方式：
-
-### 方式一：直接下载（推荐新手使用）
-1. 点击本页面顶部的绿色 "Code" 按钮
-2. 选择 "Download ZIP"
-3. 解压下载的文件到你想要的位置
-
-### 方式二：使用 Git 克隆
-```bash
-git clone [你的仓库地址]
-cd [项目文件夹名]
-```
-
-## 2. 安装依赖
-
-打开命令行（终端），进入项目目录：
-
-```bash
-# 安装项目所需的所有依赖
-npm install
-```
-
-## 3. 启动项目
-
-```bash
-# 启动开发服务器
-npm run note:dev
-```
-
-现在打开浏览器访问 http://localhost:5173 就能看到你的网站了！
-
-# 📝 网站内容管理
-
-## 文件结构说明
+## 目录结构
 
 ```
-NOTEBOOK/
-├── note/                 # 所有内容都在这个文件夹中
-│   ├── index.md         # 网站首页
-│   └── .vitepress/      # 配置文件夹
-│       └── dist/        # 构建输出目录（已忽略）
-│       └── config.js    # 主配置文件
-├── .github/ # GitHub 配置目录
-│   └── workflows/ # GitHub Actions 工作流
-└── .gitignore # Git 忽略文件
+notebook/                          # 项目根目录
+├── note/                         # VitePress 项目目录
+│   ├── .vitepress/              # VitePress 配置目录
+│   │   └── config.mjs           # 主配置文件
+│   ├── content/                 # 笔记内容 (Junction Point)
+│   └── index.md                # 网站首页
+└── README.md                    # 项目说明
+
+public/                          # Obsidian 公开目录
+├── categories/                  # 分类目录
+│   ├── tech/                   # 技术笔记
+│   │   ├── index.md           # 分类索引
+│   │   └── *.md               # 技术笔记文件
+│   └── life/                   # 生活随笔
+│       ├── index.md           # 分类索引
+│       └── *.md               # 生活笔记文件
+└── index.md                    # 笔记首页
 ```
 
-## 添加新内容
+## 配置说明
 
-### 1. 创建新文章
+### 1. VitePress 配置 (note/.vitepress/config.mjs)
 
-1. 在 `note` 文件夹中选择合适的位置（或创建新文件夹）
-2. 创建新的 `.md` 文件，例如 `note/blog/my-first-post.md`
-3. 在文件开头添加 Front Matter（文章信息）：
-
-```markdown
----
-title: 我的第一篇文章
-date: 2024-01-01
-description: 这是一篇示例文章
----
-
-# 我的第一篇文章
-
-这里是文章内容...
-```
-
-### 2. 添加到导航菜单
-
-编辑 `note/.vitepress/config.js`：
-
-```js
-export default {
+```javascript
+export default defineConfig({
+  title: "筱筱的笔记本",
+  description: "个人知识库",
+  
+  // 允许访问外部文件
+  vite: {
+    server: {
+      fs: {
+        allow: ['..', 'D:/701 --- obsidian笔记存放/筱筱的/public']
+      }
+    }
+  },
+  
   themeConfig: {
-    // 顶部导航栏
+    // 导航配置
     nav: [
       { text: '首页', link: '/' },
-      { text: '博客', link: '/blog/' },
-      // 在这里添加新的导航项
+      { text: '技术笔记', link: '/content/categories/tech/' },
+      { text: '生活随笔', link: '/content/categories/life/' },
+      { text: '分类', link: '/content/categories/' }
     ],
     
-    // 侧边栏
+    // 侧边栏配置
     sidebar: {
-      '/blog/': [
+      '/content/categories/tech/': [
         {
-          text: '博客文章', //text可以是任何想要在侧边栏显示的文字
-          items: [ //这里使用的是数组
-            { text: '我的第一篇文章', link: '/blog/my-first-post' },
-            { text: '学习笔记', link: '/blog/study-notes' },
-            // 在这里添加新的文章链接
-            // link: 必须以 / 开头，并且对应实际的文件路径（不需要包含 .md 扩展名）
+          text: '技术笔记',
+          collapsed: false,
+          items: [
+            { text: '第一篇笔记', link: '/content/categories/tech/01' }
           ]
-        },
+        }
+      ],
+      '/content/categories/life/': [
         {
           text: '生活随笔',
+          collapsed: false,
           items: [
-           { text: '旅行日记', link: '/blog/life/travel-diary' },
-           { text: '读书笔记', link: '/blog/life/reading-notes' },
-           // 这里和上面一样
+            { text: '第一篇笔记', link: '/content/categories/life/first' }
           ]
         }
       ]
     }
   }
-}
+})
 ```
 
-## Markdown 写作指南
+### 2. 文件命名规范
 
-VitePress 支持所有标准的 Markdown 语法，以下是常用示例：
+- 使用英文文件名，避免中文
+- 分类目录使用有意义的英文名称（如 tech、life）
+- 文章文件建议使用：
+  * 日期前缀：`YYYY-MM-DD-title.md`
+  * 或序号前缀：`01-title.md`
+  * 或描述性名称：`getting-started.md`
 
-```markdown
-# 一级标题
-## 二级标题
+### 3. 文章 Frontmatter
 
-- 无序列表项
-- 另一个列表项
+每篇文章都需要包含以下 frontmatter：
 
-1. 有序列表
-2. 第二项
-
-*斜体文本* 或 _斜体文本_
-**粗体文本** 或 __粗体文本__
-
-[链接文本](链接地址)
-
-![图片描述](图片地址)
-
-> 引用文本
-
-代码块：
-```js
-console.log('Hello World')
+```yaml
+---
+title: 文章标题
+date: YYYY-MM-DD
+category: tech/life
+tags:
+  - tag1
+  - tag2
+description: 文章描述
+---
 ```
 
-表格：
-| 列1 | 列2 |
-|-----|-----|
-| 内容1 | 内容2 |
+## 使用说明
+
+### 1. 目录链接设置
+
+1. 在 note 目录下创建 content 目录链接：
+```powershell
+New-Item -ItemType Junction -Path "content" -Target "D:\701 --- obsidian笔记存放\筱筱的\public"
 ```
 
-# ⚙️ 个性化设置
-
-## 修改网站信息
-
-编辑 `note/.vitepress/config.js`：
-
-```js
-export default {
-  // 网站标题
-  title: "你的网站标题",
-  
-  // 网站描述
-  description: "网站描述",
-  
-  // 主题配置
-  themeConfig: {
-    // Logo设置
-    logo: '/logo.png',
-    
-    // 社交链接
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/你的用户名' }
-    ],
-    
-    // 页脚信息
-    footer: {
-      message: '用 ❤️ 制作',
-      copyright: 'Copyright © 2024-present 你的名字'
-    }
-  }
-}
-```
-
-## 自定义主题
-
-1. 创建 `note/.vitepress/theme/custom.css`：
-
-```css
-:root {
-  --vp-c-brand: #646cff;
-  --vp-c-brand-light: #747bff;
-}
-```
-
-2. 在 `config.js` 中引入：
-
-```js
-import './theme/custom.css'
-```
-
-# 💻 本地开发
-
-## 常用命令
+### 2. 开发命令
 
 ```bash
 # 启动开发服务器
@@ -245,92 +123,295 @@ npm run note:build
 npm run note:preview
 ```
 
-## 开发技巧
+### 3. 添加新文章
 
-1. 保存文件后，网站会自动刷新
-2. 使用 `Ctrl + C` 停止开发服务器
-3. 遇到问题时，查看命令行输出的错误信息
+1. 在对应分类目录下创建 Markdown 文件
+2. 添加必要的 frontmatter
+3. 更新侧边栏配置（如需要）
 
-# 🌐 部署说明
+## 注意事项
 
-本项目使用 GitHub Actions 自动部署到 GitHub Pages。
+1. 文件路径
+   - 所有链接都需要以 `/content/` 开头
+   - 确保文件名与配置中的路径匹配
 
-## 部署配置
+2. 图片处理
+   - 推荐使用图床
+   - 直接使用图床链接
 
-1. **GitHub Pages 设置**：
-   - 在仓库设置中启用 GitHub Pages
-   - 选择 `gh-pages` 分支作为部署源
-   - 选择 `/ (root)` 作为部署目录
+3. 目录结构
+   - 保持目录结构简洁
+   - 避免过深的嵌套
 
-2. **工作流配置**：
-   - 使用 `.github/workflows/deploy.yml` 定义部署流程
-   - 自动在推送到 main 分支时触发部署
-   - 构建后的文件会被推送到 gh-pages 分支
+4. 配置更新
+   - 添加新文章后记得更新侧边栏配置
+   - 保持导航链接的正确性
 
-# ❓ 常见问题
+## 常见问题
 
-## 1. 安装依赖失败
-- 检查 Node.js 版本是否符合要求
-- 尝试删除 `node_modules` 文件夹和 `package-lock.json`，然后重新运行 `npm install`
-- 如果在中国大陆，可以使用淘宝镜像：
-  ```bash
-  npm config set registry https://registry.npmmirror.com
-  ```
+1. 404 错误
+   - 检查文件是否存在
+   - 确认路径是否正确
+   - 验证文件名大小写
 
-## 2. 页面没有显示在导航中
-- 检查文件路径是否正确
-- 确认 `config.js` 中的配置是否正确
-- 文件名和路径是否包含特殊字符
+2. 导航问题
+   - 确保所有链接以 `/content/` 开头
+   - 检查配置中的路径是否正确
 
-## 3. 本地预览正常但部署后显示错误
-- 检查 `base` 配置是否正确
-- 确认部署分支和目录设置
-- 查看 GitHub Actions 运行日志
+3. 文件更新
+   - Junction Point 确保实时同步
+   - 修改后可能需要刷新页面
 
-## 4. 常见问题和解决方案
+## 导航和侧边栏配置
 
-1. **dist 目录被 Git 跟踪问题**：
-   - 问题：dist 目录不应该被 Git 跟踪
-   - 解决：在 .gitignore 中添加 `note/.vitepress/dist/`
-   - 如果已被跟踪，使用 `git rm -r --cached note/.vitepress/dist`
+### 1. 基础配置结构
 
-2. **部署权限问题**：
-   - 问题：GitHub Actions 没有写入权限
-   - 解决：在 deploy.yml 中添加 permissions 配置
-   ```yaml
-   permissions:
-     contents: write
-   ```
+VitePress 的导航和侧边栏配置位于 `note/.vitepress/config.mjs` 文件中的 `themeConfig` 部分：
 
-3. **分支选择问题**：
-   - 问题：GitHub Pages 分支设置不正确
-   - 解决：在 GitHub Pages 设置中选择 gh-pages 分支
+```javascript
+export default defineConfig({
+  themeConfig: {
+    nav: [...],      // 导航栏配置
+    sidebar: [...],  // 侧边栏配置
+    // 其他主题配置
+  }
+})
+```
 
-# 🎯 最佳实践
+### 2. 导航栏配置
 
-1. 文件组织
-   - 按主题或类别创建文件夹
-   - 使用有意义的文件名
-   - 保持目录结构清晰
+```javascript
+nav: [
+  { text: '首页', link: '/' },
+  { text: '技术笔记', link: '/content/categories/tech/' },
+  { text: '生活随笔', link: '/content/categories/life/' },
+  { text: '分类', link: '/content/categories/' }
+]
+```
 
-2. 内容编写
-   - 使用清晰的标题层级
-   - 添加适当的描述和标签
-   - 定期备份内容
+### 3. 全局侧边栏配置
 
-3. 版本控制
-   - 经常提交更改
-   - 写清晰的提交信息
-   - 在重大更改前创建分支
+```javascript
+sidebar: [
+  {
+    text: '技术笔记',
+    collapsed: false,  // 是否默认折叠
+    items: [
+      { text: '技术笔记首页', link: '/content/categories/tech/' },
+      { text: '第一篇笔记', link: '/content/categories/tech/01' }
+    ]
+  },
+  {
+    text: '生活随笔',
+    collapsed: false,
+    items: [
+      { text: '生活随笔首页', link: '/content/categories/life/' },
+      { text: '第一篇笔记', link: '/content/categories/life/first' }
+    ]
+  }
+]
+```
 
-# 📞 获取帮助
+### 4. 其他主题配置
 
-如果遇到问题：
-1. 查看本文档的常见问题部分
-2. 搜索 GitHub Issues
-3. 在 GitHub 上提新的 Issue
-4. 通过 ChatGPT/Claude 获取帮助
+```javascript
+themeConfig: {
+  // 文档页脚配置
+  docFooter: {
+    prev: '上一页',
+    next: '下一页'
+  },
 
----
+  // 大纲配置
+  outline: {
+    level: [2, 3],
+    label: '目录'
+  },
 
-> 🎉 恭喜你！现在你已经掌握了这个笔记网站的所有基础知识。开始创建属于你的内容吧！
+  // 搜索配置
+  search: {
+    provider: 'local',
+    options: {
+      translations: {
+        button: {
+          buttonText: '搜索文档',
+          buttonAriaLabel: '搜索文档'
+        },
+        modal: {
+          noResultsText: '无法找到相关结果',
+          resetButtonTitle: '清除查询条件',
+          footer: {
+            selectText: '选择',
+            navigateText: '切换',
+            closeText: '关闭'
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### 5. 配置说明
+
+1. 导航栏特点：
+   - 支持多级导航
+   - 使用 `link` 属性指定链接
+   - 所有内容页面链接都需要以 `/content/` 开头
+
+2. 侧边栏特点：
+   - 全局显示（除首页外）
+   - 支持分组和嵌套
+   - 可以设置折叠状态
+
+3. 页面功能：
+   - 上一页/下一页导航
+   - 自动生成目录
+   - 本地搜索功能
+   - 中文界面
+
+### 6. 注意事项
+
+1. 链接路径：
+   - 所有内容页面的链接都需要以 `/content/` 开头
+   - 确保链接路径与实际文件路径匹配
+
+2. 文件组织：
+   - 在添加新文章时需要更新侧边栏配置
+   - 建议使用有意义的文件名和清晰的目录结构
+
+3. 配置更新：
+   - 修改配置后会自动热更新
+   - 如遇问题可以重启开发服务器
+
+## 侧边栏层级结构说明
+
+### 1. 基础结构示例
+
+```javascript
+sidebar: [
+  // 第一级：顶级分类
+  {
+    text: '分类名称',
+    items: [
+      // 第二级：子分类或文章
+      { 
+        text: '子分类名称',
+        items: [
+          // 第三级：文章或更深层子分类
+          { text: '文章标题', link: '/content/path/to/article' }
+        ]
+      }
+    ]
+  }
+]
+```
+
+### 2. 添加新内容的位置
+
+1. 添加顶级分类：
+```javascript
+sidebar: [
+  // 在这里添加新的顶级分类
+  {
+    text: '新的顶级分类',
+    items: []
+  },
+  // 现有的分类...
+]
+```
+
+2. 添加子分类：
+```javascript
+{
+  text: '现有顶级分类',
+  items: [
+    // 在这里添加新的子分类
+    {
+      text: '新的子分类',
+      items: []
+    },
+    // 现有的子分类...
+  ]
+}
+```
+
+3. 添加文章：
+```javascript
+{
+  text: '现有分类',
+  items: [
+    // 在这里添加新的文章
+    { text: '新文章标题', link: '/content/path/to/new-article' },
+    // 现有的文章...
+  ]
+}
+```
+
+### 3. 完整层级示例
+
+```javascript
+sidebar: [
+  // 第一个顶级分类
+  {
+    text: '简要说明',
+    items: [
+      { text: '主页', link: '/content/' },
+      { text: '介绍', link: '/content/intro' }
+    ]
+  },
+  
+  // 第二个顶级分类（带子分类）
+  {
+    text: '技术文档',
+    items: [
+      // 子分类
+      {
+        text: 'JavaScript',
+        items: [
+          // 文章
+          { text: '基础教程', link: '/content/tech/js/basics' },
+          { text: '进阶指南', link: '/content/tech/js/advanced' }
+        ]
+      },
+      // 另一个子分类
+      {
+        text: 'Python',
+        items: [
+          { text: '入门指南', link: '/content/tech/python/getting-started' }
+        ]
+      }
+    ]
+  },
+  
+  // 第三个顶级分类（直接包含文章）
+  {
+    text: '生活随笔',
+    items: [
+      { text: '我的第一篇文章', link: '/content/life/first-post' },
+      { text: '读书笔记', link: '/content/life/reading-notes' }
+    ]
+  }
+]
+```
+
+### 4. 注意事项
+
+1. 路径规范：
+   - 所有文章链接都必须以 `/content/` 开头
+   - 使用有意义的目录结构和文件名
+   - 保持 URL 友好（避免使用特殊字符和空格）
+
+2. 层级限制：
+   - 建议最多使用三级层级
+   - 过深的层级可能影响用户体验
+
+3. 命名建议：
+   - 分类名称简洁明了
+   - 文章标题具有描述性
+   - 保持命名风格一致
+
+4. 维护建议：
+   - 定期整理和更新侧边栏结构
+   - 删除文章时同步更新侧边栏
+   - 保持分类结构的清晰和合理

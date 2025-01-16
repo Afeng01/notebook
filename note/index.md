@@ -1,9 +1,25 @@
-# notebook - CC
-2025年1月7日:
-用于存档obsidian中记录整理的笔记内容。
-【flomo记录存档，未整理】
-用于在 AI 时代下进行的思考记录,其中包含最少必要知识等内容.
-
-## 目录
-以下内容还未更新，仅为测试
-- [obsidian-AI-agent-install](./windows-computer-literacy/obsidian-plugin/obsidian-AI-agent-install.md)
+---
+public: true
+layout: home
+hero:
+  name: 让奇迹发生
+  text: 迭代、递归、无尽探索
+  tagline: 记录、分享、成长
+  actions:
+    - theme: brand
+      text: 开始阅读
+      link: /content/
+    - theme: alt
+      text: 关于我
+      link: /about
+features:
+  - icon: 📝
+    title: 知识管理
+    details: 使用 Obsidian 进行个人知识管理，构建知识网络
+  - icon: 🌐
+    title: 在线分享
+    details: 将部分笔记公开分享，与他人交流学习
+  - icon: 🔄
+    title: 持续更新
+    details: 不断学习，持续记录，逐步完善知识体系
+--- 
