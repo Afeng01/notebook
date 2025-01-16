@@ -3,21 +3,17 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   base: '/notebook/',
   title: "无尽的探索",
-  description: "个人知识库",
+  description: "使用 VitePress 搭建的笔记站点",
+  lang: 'zh-CN',
   
-  vite: {
-    server: {
-      fs: {
-        allow: ['..', 'D:/701 --- obsidian笔记存放/筱筱的/public']
-      }
-    }
-  },
+  // 添加调试配置
+  debug: true,
   
   themeConfig: {
     // 导航栏
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Note', link: '/public/' }
+      { text: 'Note', link: '/content/' }
     ],
     
     // 全局侧边栏
@@ -26,17 +22,23 @@ export default defineConfig({
         text: '简要说明',
         collapsed: false,
         items: [
-          { text: '一切的开始', link: '/public/' },
-          { text: '介绍', link: '/public/intro' },
-          { text: '开始使用', link: '/public/getting-started' }
+          { text: '一切的开始', link: '/content/' },
+          { text: '介绍', link: '/content/intro' },
+          { text: '开始使用', link: '/content/getting-started' }
         ]
       },
       {
         text: '生活随笔',
         collapsed: false,
         items: [
-          { text: '生活随笔首页', link: '/public/categories/life/' },
-          { text: '第一篇笔记', link: '/public/categories/life/first' }
+          { text: '生活随笔首页', link: '/content/categories/life/' },
+          { text: '第一篇笔记', link: '/content/categories/life/first' }
+        ]
+      },
+      {
+        text: '测试',
+        items: [
+          { text: '测试页面', link: '/content/test' }
         ]
       }
     ],
@@ -53,22 +55,26 @@ export default defineConfig({
       label: '目录'
     },
 
-    // 搜索配置
+    // 简化搜索配置
     search: {
       provider: 'local',
       options: {
-        translations: {
-          button: {
-            buttonText: '搜索文档',
-            buttonAriaLabel: '搜索文档'
-          },
-          modal: {
-            noResultsText: '无法找到相关结果',
-            resetButtonTitle: '清除查询条件',
-            footer: {
-              selectText: '选择',
-              navigateText: '切换',
-              closeText: '关闭'
+        locales: {
+          root: {
+            translations: {
+              button: {
+                buttonText: '搜索文档',
+                buttonAriaLabel: '搜索文档'
+              },
+              modal: {
+                noResultsText: '目前服务暂未启用，搜索不到以下关键词：',
+                resetButtonTitle: '关闭',
+                footer: {
+                  selectText: '选择',
+                  navigateText: '切换',
+                  closeText: '关闭'
+                }
+              }
             }
           }
         }
@@ -76,6 +82,7 @@ export default defineConfig({
     }
   },
 
+  // 针对obsidian仓库相对路径的配置
   markdown: {
     ignoreDeadLinks: true,
     config: (md) => {
@@ -89,12 +96,26 @@ export default defineConfig({
         
         if (href) {
           if (!href.startsWith('/') && !href.startsWith('http')) {
-            token.attrSet('href', `/public/${href}`)
+            token.attrSet('href', `/content/${href}`)
           }
         }
 
         return defaultRender(tokens, idx, options, env, self)
       }
     }
+  },
+
+  // 添加文件系统调试
+  vite: {
+    server: {
+      fs: {
+        strict: false,
+        allow: ['..', 'D:/701 --- obsidian笔记存放/筱筱的/content']
+      },
+      port: 5174,
+      strictPort: true,
+      host: true
+    },
+    logLevel: 'info'
   }
 }) 

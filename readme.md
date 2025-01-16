@@ -415,3 +415,46 @@ sidebar: [
    - 定期整理和更新侧边栏结构
    - 删除文章时同步更新侧边栏
    - 保持分类结构的清晰和合理
+
+### 1. 文件系统配置
+
+VitePress默认只能访问项目目录内的文件。由于我们的笔记实际存储在Obsidian仓库中，需要特殊的文件系统配置来允许访问外部文件。
+
+#### 配置步骤：
+
+1. 创建目录链接（Junction Point）：
+```powershell
+# 将VitePress的content目录链接到Obsidian的content目录
+New-Item -ItemType Junction -Path "note/content" -Target "path/to/obsidian/content"
+```
+
+2. 配置VitePress允许访问外部文件：
+```javascript
+// note/.vitepress/config.mjs
+export default defineConfig({
+  // ... 其他配置 ...
+  
+  vite: {
+    server: {
+      fs: {
+        strict: false,  // 允许访问项目目录之外的文件
+        allow: [
+          '..',  // 允许访问上级目录
+          'D:/path/to/obsidian/content'  // 允许访问Obsidian仓库
+        ]
+      }
+    }
+  }
+})
+```
+
+#### 配置说明：
+
+- **strict: false**：关闭严格的文件系统访问限制
+- **allow**：指定允许访问的目录列表
+  - `'..'`：允许访问项目父级目录
+  - 完整的Obsidian仓库路径：允许直接访问笔记文件
+
+这个配置对于开发环境是必需的，它允许VitePress在本地开发时正确访问和加载Obsidian仓库中的笔记文件。在生产环境构建时，所有文件都会被复制到输出目录，因此不需要这个配置。
+
+> 注意：请确保路径使用正斜杠(/)而不是反斜杠(\)，这样可以避免路径解析问题。

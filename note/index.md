@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: 简要说明
-      link: /public/
+      link: /content/
     - theme: alt
       text: 关于
       link: /about

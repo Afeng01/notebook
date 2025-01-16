@@ -15,5 +15,8 @@
   "description": "",
   "devDependencies": {
     "vitepress": "^1.0.0-rc.40"
+  },
+  "dependencies": {
+    "vitepress": "^1.0.0-rc.44"
   }
 }

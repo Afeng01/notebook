@@ -9,5 +9,9 @@
   },
   "dependencies": {
     "vitepress": "^1.0.0-rc.44"
+  },
+  "devDependencies": {
+    "minisearch": "^6.3.0",
+    "vitepress": "^1.0.0-rc.40"
   }
-} 
+}

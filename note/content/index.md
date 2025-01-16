@@ -1,3 +1,7 @@
+---
+# index.md应该包含frontmatter
+title: 首页
+---
 # 一切的开始
 
 2025年1月16日更新：
