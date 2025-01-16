@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  base: '/notebook/',
   title: "无尽的探索",
   description: "个人知识库",
   
@@ -16,7 +17,7 @@ export default defineConfig({
     // 导航栏
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Note', link: '/content/index' }
+      { text: 'Note', link: '/content/' }
     ],
     
     // 全局侧边栏
