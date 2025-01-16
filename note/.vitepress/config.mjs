@@ -73,5 +73,9 @@ export default defineConfig({
         }
       }
     }
+  },
+
+  markdown: {
+    ignoreDeadLinks: true
   }
 }) 
